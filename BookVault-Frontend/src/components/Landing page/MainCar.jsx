@@ -4,13 +4,14 @@ import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { BooksRenderContext } from "../../contexts/BooksRenderContext";
+import { API_BASE_URL } from "../../config/api";
 export function CarouselCustomArrows() {
   const [featuredBooks, setFeaturedBooks] = useState([]);
   const navigate = useNavigate();
   const { currentBooks, setCurrentBooks } =
     useContext(BooksRenderContext).currentBook;
   const getFeaturedBooks = async () => {
-    const res = await axios.get("http://localhost:3001/featuredbooks");
+    const res = await axios.get(`${API_BASE_URL}/featuredbooks`);
     // console.log(res.data);
     setFeaturedBooks(res.data);
   };

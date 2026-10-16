@@ -1,11 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../../config/api";
 
 const AdminBorrowedBooks = () => {
   const [usersData, setUsersData] = useState([]);
   const getUsers = async () => {
-    const response = await axios.get("http://localhost:3001/getuserinfo");
+    const response = await axios.get(`${API_BASE_URL}/getuserinfo`);
     // console.log(response.data);
     setUsersData(response.data);
   };

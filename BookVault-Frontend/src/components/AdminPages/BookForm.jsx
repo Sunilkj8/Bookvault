@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { API_BASE_URL } from "../../config/api";
 
 const BookForm = () => {
   const [bookData, setBookData] = useState({
@@ -18,7 +19,7 @@ const BookForm = () => {
     e.preventDefault();
     console.log("Book Data Submitted:", bookData);
     alert("Book data submitted. Check console for submitted values");
-    await axios.post("http://localhost:3001/addbooks", bookData);
+    await axios.post(`${API_BASE_URL}/addbooks`, bookData);
   };
 
   return (

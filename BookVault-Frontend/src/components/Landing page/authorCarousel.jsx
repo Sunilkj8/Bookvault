@@ -4,6 +4,7 @@ import { Paper, Button } from "@mui/material";
 import { BooksRenderContext } from "../../contexts/BooksRenderContext";
 import InspiringBook from "./InspiringBook";
 import axios from "axios";
+import { API_BASE_URL } from "../../config/api";
 
 function Example(props) {
   const { inspiringBooks, setInspiringBooks } =
@@ -12,7 +13,7 @@ function Example(props) {
   const [authorInfo, setAuthorInfo] = useState();
 
   async function getAuthorInfo() {
-    const response = await axios.get("http://localhost:3001/authorinfo");
+    const response = await axios.get(`${API_BASE_URL}/authorinfo`);
     console.log(response.data);
 
     setAuthorInfo([response.data]);

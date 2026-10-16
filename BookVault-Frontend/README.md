@@ -2,6 +2,9 @@
 
 Modern, ultra-responsive Book Rental web platform built with React, Vite, and Tailwind CSS.
 
+## Connected Backend
+- **Backend URL**: `https://bookvault-ktk4.onrender.com`
+
 ## Features
 - **Pure Book Rental Experience**: Browse titles by category, check availability, view rental pricing and refundable deposit terms.
 - **Fast Interactive UI**: Instant client-side search, real-time filtering, favorites wishlist, and active book rentals management.

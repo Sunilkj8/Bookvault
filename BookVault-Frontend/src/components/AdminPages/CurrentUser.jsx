@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
+import { API_BASE_URL } from "../../config/api";
 
 const CurrentUser = () => {
   const [currUserData, setCurrUserData] = useState([]);
@@ -13,7 +14,7 @@ const CurrentUser = () => {
 
   const getUserBorrowedBooks = async () => {
     const response = await axios.post(
-      "http://localhost:3001/getborrowedbooks",
+      `${API_BASE_URL}/getborrowedbooks`,
       {
         user_id: user_id,
       }
@@ -39,7 +40,7 @@ const CurrentUser = () => {
                 <div
                   onClick={async () => {
                     const res = await axios.post(
-                      "http://localhost:3001/removefromborrowedbooks",
+                      `${API_BASE_URL}/removefromborrowedbooks`,
                       { book_id: elem.book_id, user_id: elem.user_id }
                     );
                     toast.success(res.data);
