@@ -1,0 +1,122 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id        Int        @id @default(autoincrement())
+  username  String     @unique
+  email     String     @unique
+  password  String
+  usertype  String     @default("user") // "user" or "admin"
+  avatar    String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  rentals   Rental[]
+  reviews   Review[]
+  favorites Favorite[]
+
+  @@map("user_info")
+}
+
+model Book {
+  id               Int        @id @default(autoincrement())
+  book_name        String
+  book_author      String
+  book_image       String
+  book_description String
+  category         String     // "fictional", "selfhelp", "programming", "autobiography", "sports", "featured"
+  star_ratings     Float      @default(4.5)
+  price_per_day    Float      @default(1.50)  // Rental rate per day ($ or ₹)
+  deposit_amount   Float      @default(15.00) // Refundable security deposit
+  total_copies     Int        @default(5)
+  available_copies Int        @default(5)
+  is_available     Boolean    @default(true)
+  isfavourite      Boolean    @default(false)
+  is_featured      Boolean    @default(false)
+  published_year   Int?       @default(2023)
+  isbn             String?
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+
+  rentals          Rental[]
+  reviews          Review[]
+  favorites        Favorite[]
+
+  @@map("books")
+}
+
+model Rental {
+  id               Int       @id @default(autoincrement())
+  user_id          Int
+  book_id          Int
+  book_name        String
+  book_author      String
+  book_image       String
+  book_description String?
+  start_date       DateTime  @default(now())
+  returnon         String    // YYYY-MM-DD or readable date string
+  due_date         DateTime
+  returned_at      DateTime?
+  rental_days      Int       @default(14)
+  daily_rate       Float     @default(1.50)
+  deposit_amount   Float     @default(15.00)
+  rental_fee       Float     @default(21.00)
+  total_paid       Float     @default(36.00)
+  refund_amount    Float     @default(15.00)
+  late_fee         Float     @default(0.00)
+  status           String    @default("ACTIVE") // "ACTIVE", "RETURNED", "OVERDUE", "CANCELLED"
+  notes            String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  user             User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  book             Book      @relation(fields: [book_id], references: [id], onDelete: Cascade)
+
+  @@map("borrowed_books")
+}
+
+model Review {
+  id                 Int      @id @default(autoincrement())
+  book_id            Int
+  username           String
+  review_headline    String
+  review_description String
+  rating             Int      @default(5)
+  createdAt          DateTime @default(now())
+
+  book               Book     @relation(fields: [book_id], references: [id], onDelete: Cascade)
+  user               User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId             Int?
+
+  @@map("book_reviews")
+}
+
+model Favorite {
+  id        Int      @id @default(autoincrement())
+  user_id   Int
+  book_id   Int
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  book      Book     @relation(fields: [book_id], references: [id], onDelete: Cascade)
+
+  @@unique([user_id, book_id])
+  @@map("favorites")
+}
+
+model AuthorInfo {
+  id           Int     @id @default(autoincrement())
+  author_name  String  @unique
+  author_image String
+  category     String?
+  author_bio   String?
+
+  @@map("authors_info")
+}
